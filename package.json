@@ -1,0 +1,26 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@plsr/nuxt-layer-base": "^0.0.6",
+    "@tailwindcss/forms": "^0.5.7",
+    "nanoid": "^5.0.4",
+    "nuxt": "^3.8.2",
+    "vue": "^3.3.10",
+    "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "@akryum/flexsearch-es": "^0.7.32",
+    "idb-keyval": "^6.2.1",
+    "unstorage": "^1.10.1"
+  }
+}
