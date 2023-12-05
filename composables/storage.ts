@@ -28,7 +28,7 @@ export async function getBackup() {
 
 export async function setBackup(data: BackupItems) {
   const storage = useStorage();
-
+  await storage.value.clear();
   return Promise.all(
     Array.from(data.entries()).map(([key, value]) =>
       storage.value.setItem(key, value),

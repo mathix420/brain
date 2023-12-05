@@ -117,6 +117,18 @@ async function manual() {
   if (!x) return toast.warn("Aborted.");
   if (!(await addLink(x))) toast.error("Failed to add a link.", 5000);
 }
+
+function remove(link: string, event: MouseEvent) {
+  event.preventDefault();
+  event.stopPropagation();
+
+  const id = encodeURIComponent(link);
+
+  records.value.delete(id);
+  records.value.delete("brain:" + id);
+  flex.value?.remove(id);
+  flex.value?.remove("brain:" + id);
+}
 </script>
 
 <template>
@@ -163,6 +175,15 @@ async function manual() {
             class="object-scale-down h-full w-full"
             :src="`https://${card.domain}/favicon.ico`"
           />
+          <button
+            class="absolute top-1 right-1 hidden group-hover:block z-10"
+            @click="remove(card.link, $event)"
+          >
+            <Icon
+              name="ic:sharp-remove-circle"
+              class="h-6 w-6 text-white/50 hover:text-white/80"
+            />
+          </button>
           <header
             class="flex absolute p-4 bottom-0 inset-x-0 group-hover:top-0 backdrop-blur-md bg-black/20"
           >
