@@ -28,7 +28,7 @@ const theme: Record<Toast["type"], string> = {
             <p>{{ toast.content }}</p>
             <div class="ms-auto">
               <button
-                class="inline-flex flex-shrink-0 justify-center items-center p-1 rounded-md opacity-50 hover:opacity-100 hover:backdrop-brightness-95 focus:backdrop-brightness-95 focus:outline-none focus:opacity-100"
+                class="inline-flex flex-shrink-0 justify-center items-center p-1 rounded-md hover:backdrop-brightness-50 focus:backdrop-brightness-50 focus:outline-none focus:opacity-100"
                 @click="dismiss(toast.uuid)"
               >
                 <span class="sr-only">Close</span>
