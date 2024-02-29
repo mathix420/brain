@@ -23,7 +23,7 @@ const theme: Record<Toast["type"], string> = {
             :key="toast.uuid"
             :class="theme[toast.type]"
             role="alert"
-            class="absolute shadow-xl shadow-black bottom-0 right-0 backdrop-blur-md transition-all ease-in-circ duration-300 transform second-last:-translate-y-[25%] second-last:scale-95 third-last:-translate-y-[50%] third-last:scale-90 fourth-last:-translate-y-[75%] fourth-last:scale-[85%] group-hover:second-last:-translate-y-[115%] group-hover:third-last:-translate-y-[230%] group-hover:fourth-last:-translate-y-[345%] before:top-full before:-bottom-full before:right-0 before:left-0 before:absolute group-hover:scale-100 flex items-center p-4 w-full max-w-sm ring-2 ring-inset text-sm rounded-lg"
+            class="absolute filter brightness-75 shadow-xl shadow-black bottom-0 right-0 backdrop-blur-md transition-all ease-in-circ duration-300 transform second-last:-translate-y-[25%] second-last:scale-95 third-last:-translate-y-[50%] third-last:scale-90 fourth-last:-translate-y-[75%] fourth-last:scale-[85%] group-hover:second-last:-translate-y-[115%] group-hover:third-last:-translate-y-[230%] group-hover:fourth-last:-translate-y-[345%] before:top-full before:-bottom-full before:right-0 before:left-0 before:absolute group-hover:scale-100 flex items-center p-4 w-full max-w-sm ring-2 ring-inset text-sm rounded-lg"
           >
             <p>{{ toast.content }}</p>
             <div class="ms-auto">
