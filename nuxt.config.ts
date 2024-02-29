@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  nitro: {
-    preset: "cloudflare",
-  },
+  // nitro: {
+  //   preset: "cloudflare",
+  // },
 });
