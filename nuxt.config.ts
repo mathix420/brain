@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   extends: ["@plsr/nuxt-layer-base"],
   app: {
     head: {
-      title: "Brain; Personal Search Engine",
+      title: "Brain - Personal Search Engine",
     },
   },
   devtools: { enabled: true },
