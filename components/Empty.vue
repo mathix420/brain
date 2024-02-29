@@ -22,8 +22,13 @@ defineEmits<{
       />
     </svg>
     <h3 class="mt-2 text-sm font-semibold text-slate-50">No bookmarks</h3>
-    <p class="mt-1 text-sm text-gray-200">
-      Drag and drop or paste a link to get started.
+    <p class="my-2 text-sm text-gray-200">
+      Drag and drop or
+      <kbd
+        class="px-1.5 py-1 mx-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
+        >Ctrl+V</kbd
+      >
+      a link to get started.
     </p>
     <div class="mt-6">
       <button
@@ -31,8 +36,8 @@ defineEmits<{
         class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         @click="$emit('click')"
       >
-        <Icon class="-ml-0.5 mr-1.5 h-5 w-5" name="heroicons:plus-20-solid" />
-        Manual add
+        <Icon class="-ml-0.5 mr-1.5 h-5 w-5" name="heroicons:clipboard" />
+        Paste Link
       </button>
     </div>
   </div>

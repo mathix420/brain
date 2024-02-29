@@ -80,14 +80,7 @@ async function addLink(link: string) {
   return true;
 }
 
-async function dropHandler(e: DragEvent | ClipboardEvent) {
-  e.preventDefault();
-  e.stopPropagation();
-  isDragHoveringAndValid.value = false;
-
-  const data =
-    (e as DragEvent).dataTransfer || (e as ClipboardEvent).clipboardData;
-
+async function processDataTransfer(data: DataTransfer | null) {
   if (
     data?.types.includes("text/uri-list") ||
     data?.types.includes("text/plain")
@@ -96,10 +89,10 @@ async function dropHandler(e: DragEvent | ClipboardEvent) {
     const textData = data?.getData("text/plain");
 
     if (!textData.includes("://")) {
-      URIs.push("https://" + data?.getData("text/plain"));
-      URIs.push("http://" + data?.getData("text/plain"));
+      URIs.push("https://" + textData);
+      URIs.push("http://" + textData);
     } else {
-      URIs.push(data?.getData("text/plain"));
+      URIs.push(textData);
     }
 
     const validURIs = URIs.filter(isValidURI);
@@ -111,11 +104,64 @@ async function dropHandler(e: DragEvent | ClipboardEvent) {
   }
 }
 
-async function manual() {
+async function dropHandler(e: DragEvent | ClipboardEvent) {
+  e.preventDefault();
+  e.stopPropagation();
+  isDragHoveringAndValid.value = false;
+
+  processDataTransfer(
+    (e as DragEvent).dataTransfer || (e as ClipboardEvent).clipboardData,
+  );
+}
+
+async function promptNewLink() {
   const x = prompt("Paste your link");
 
   if (!x) return toast.warn("Aborted.");
   if (!(await addLink(x))) toast.error("Failed to add a link.", 5000);
+}
+
+async function getLinkFromClipboard() {
+  const hasAccess = await hasClipboardReadAccess();
+
+  if (!hasAccess) return promptNewLink();
+
+  try {
+    const clipboardContents = await navigator.clipboard.read();
+
+    for (const item of clipboardContents) {
+      const URIs: string[] = [];
+
+      if (item?.types.includes("text/uri-list")) {
+        const URIListBlob = await item.getType("text/uri-list");
+        const URIList = await URIListBlob.text();
+        URIs.push(...parseUriList(URIList));
+      }
+
+      if (item?.types.includes("text/plain")) {
+        const blob = await item.getType("text/plain");
+        const textData = await blob.text();
+
+        if (!textData.includes("://")) {
+          URIs.push("https://" + textData);
+          URIs.push("http://" + textData);
+        } else {
+          URIs.push(textData);
+        }
+      }
+
+      const validURIs = URIs.filter(isValidURI);
+
+      for (const uri of validURIs) {
+        if (await addLink(uri)) return;
+      }
+    }
+
+    toast.error("Failed to add a link.", 5000);
+  } catch (error) {
+    console.error(error);
+    return promptNewLink();
+  }
 }
 
 function remove(link: string, event: MouseEvent) {
@@ -147,7 +193,7 @@ function remove(link: string, event: MouseEvent) {
         id="search"
         v-model="searchQuery"
         autofocus
-        class="py-4 px-5 text-md my-10 rounded-xl block w-full border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+        class="py-4 px-5 text-md my-10 rounded-xl block w-full border-0 text-gray-900 placeholder:text-gray-400 focus:ring-4 focus:ring-indigo-600"
         placeholder="Query your brain"
         type="search"
         name="search"
@@ -194,17 +240,17 @@ function remove(link: string, event: MouseEvent) {
           </header>
         </article>
       </NuxtLink>
-      <Empty v-if="!records.size" @click="manual" />
+      <Empty v-if="!records.size" @click="getLinkFromClipboard" />
     </div>
 
     <ClientOnly>
       <Teleport to="body">
         <button
           type="button"
-          class="fixed bottom-3 right-3 z-50 flex rounded-full bg-indigo-600 p-2 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          @click="manual"
+          class="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-50 flex rounded-full bg-indigo-600 p-3.5 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          @click="getLinkFromClipboard"
         >
-          <Icon name="heroicons:plus-20-solid" class="h-10 w-10" />
+          <Icon name="heroicons:clipboard" class="h-7 w-7" />
         </button>
       </Teleport>
     </ClientOnly>
