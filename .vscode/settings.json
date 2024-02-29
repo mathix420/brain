@@ -3,7 +3,7 @@
   "prettier.enable": false,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll": true,
+    "source.fixAll": "explicit"
   },
   "files.associations": {
     "*.css": "tailwindcss"
