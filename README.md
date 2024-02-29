@@ -1,6 +1,16 @@
-# Nuxt 3 Minimal Starter
+# [WIP] Pulsar Brain
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Search engine for your bookmarks.
+
+Fully self-hostable on Cloudflare (Cloudflare WorkersAI + Pages + KV).
+
+## Todo
+
+- [x] LocalStorage
+- [x] Get Schema.Org data
+- [ ] [WIP] Generate summary + keywords using AI ()
+- [ ] Auth + KV Storage
+- [ ] Use screenshot when OG image missing
 
 ## Setup
 

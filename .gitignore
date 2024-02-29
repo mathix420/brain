@@ -18,6 +18,10 @@ logs
 .fleet
 .idea
 
+# Wrangler
+.wrangler/
+.dev.vars
+
 # Local env files
 .env
 .env.*

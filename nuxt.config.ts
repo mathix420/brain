@@ -2,4 +2,7 @@
 export default defineNuxtConfig({
   extends: ["@plsr/nuxt-layer-base"],
   devtools: { enabled: true },
+  nitro: {
+    preset: "cloudflare",
+  },
 });
