@@ -49,7 +49,17 @@ function dragLeave(e: DragEvent) {
   isDragHoveringAndValid.value = false;
 }
 
+function blobToBase64(blob: Blob) {
+  return new Promise<string>((resolve, _) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.readAsDataURL(blob);
+  });
+}
+
 async function addLink(link: string) {
+  toast.info("Adding a link...", 2000);
+
   const { data, error } = await useFetch("/api/meta", {
     query: { uri: link },
     cache: "force-cache",
@@ -73,6 +83,20 @@ async function addLink(link: string) {
     title: data.value.ogTitle || data.value.twitterTitle,
     link,
   };
+
+  if (!value.image) {
+    const screnshot = await useFetch<Blob>("/api/screenshot", {
+      method: "GET",
+      responseType: "blob",
+      query: { uri: link },
+    });
+
+    if (!screnshot.error.value && !!screnshot.data.value) {
+      value.image = await blobToBase64(screnshot.data.value);
+    }
+  } else {
+    value.image = `/api/imageProxy?uri=${encodeURIComponent(value.image)}`;
+  }
 
   records.value.set(key, value);
   flex.value?.add(key, value);
@@ -219,7 +243,7 @@ function remove(link: string, event: MouseEvent) {
           <img
             v-else-if="card.domain"
             class="object-scale-down h-full w-full"
-            :src="`https://${card.domain}/favicon.ico`"
+            :src="imgProxy(`https://${card.domain}/favicon.ico`)"
           />
           <button
             class="absolute top-1 right-1 hidden group-hover:block z-10"
